@@ -7,11 +7,11 @@ import pyautogui
 pyautogui.click(1721,1059)
 
 # 右击 clash 图标，弹出菜单
-pyautogui.rightClick(1745, 1020)
+pyautogui.rightClick(1724, 980)
 pyautogui.sleep(1)
 
 # 选中控制面板，打开
-pyautogui.click(1817,724)
+pyautogui.click(1817,679)
 pyautogui.sleep(2)
 
 # 控制面板上手动代理的坐标

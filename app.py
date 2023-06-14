@@ -3,15 +3,16 @@
 
 import pyautogui
 
-def ads_click_direct(x:int, y:int):
+def ads_click_direct(points):
     '''
     按住ctrl点击给出的x,y坐标
     '''
-    pyautogui.keyDown('ctrl')
-    pyautogui.click(x, y)
-    pyautogui.keyUp('ctrl')
+    for point in points:
+        pyautogui.keyDown('ctrl')
+        pyautogui.click(point[0], point[1])
+        pyautogui.keyUp('ctrl')
 
-    pyautogui.sleep(2)
+        pyautogui.sleep(2)
 
 def open_jaskan_com(website: str):
     '''
@@ -23,9 +24,12 @@ def open_jaskan_com(website: str):
     # 等待运行面板打开
     pyautogui.sleep(1)
 
-    # 输入命令，打开浏览器 TODO 直接在打开网址
+    # 输入命令，打开浏览器
     # pyautogui.press('brave')
-    pyautogui.press(f'brave {website}')
+    # pyautogui.press(f'brave {website}')
+    pyautogui.typewrite(f'brave  {website}')
+    pyautogui.press('enter')
+    pyautogui.press('enter')
     pyautogui.sleep(0.5)
 
     # # 模拟按下回车键
@@ -48,58 +52,101 @@ def close_jaskan_com():
     关闭浏览器
     '''
     pyautogui.sleep(10)
-    ads_click_direct(1898,12)
+    ads_click_direct([(1898,12)])
 
 def execute_click_ads():
     '''
     执行广告点击
     '''
     # 点击首页底部广告
-    ads_click_direct(671, 970)
+    ads_click_direct([(515,940),(881,994),(1349,977)])
 
-    # 点击首页左侧广告
-    ads_click_direct(189, 408)
+    # # 点击首页左侧广告
+    ads_click_direct([(185,328),(185,531),(185,782)])
 
-    # 点击首页右侧广告
-    ads_click_direct(1704, 381)
+    # # 点击首页右侧广告
+    ads_click_direct([(1708,329),(1708,528),(1708,780)])
 
-    # TODO pyautogui.scroll(-10) 向下滑动
     # 滑动浏览器滚动条
-    pyautogui.click(1910,186)
-    pyautogui.dragTo(1910,433, 2)
-    ads_click_direct(569,255)
-    ads_click_direct(1322,254)
-    ads_click_direct(565,403)
-    ads_click_direct(1322,413)
+    pyautogui.click(1910,194)
+    pyautogui.dragTo(1910,438, 2)
+    ads_click_direct([(415,258),(934,340),(1336,428)])
     pyautogui.sleep(1)
 
-    pyautogui.click(1910,433)
-    pyautogui.dragTo(1910,571, 2)
-    ads_click_direct(438,288)
-    ads_click_direct(438,449)
-    ads_click_direct(1468,276)
-    ads_click_direct(1468,465)
+    pyautogui.click(1910,438)
+    pyautogui.dragTo(1910,561, 2)
+    ads_click_direct([(444,367),(932,472),(1331, 456)])
     pyautogui.sleep(1)
 
-    pyautogui.click(1910,571)
-    pyautogui.dragTo(1910,704, 2)
-    ads_click_direct(429,178)
-    ads_click_direct(429,341)
-    ads_click_direct(1472,185)
-    ads_click_direct(1472,368)
+    pyautogui.click(1910,561)
+    pyautogui.dragTo(1910,705, 2)
+    ads_click_direct([(412,265),(942,386),(1450,387)])
     pyautogui.sleep(1)
 
     # 搜索页面
-    pyautogui.click(1263, 125)
+    pyautogui.click(1529, 124)
     pyautogui.sleep(15)
+    
+    # 点击底部广告
+    ads_click_direct([(515,940),(881,994),(1349,977)])
 
-    ads_click_direct(596,377)
-    ads_click_direct(404,559)
-    ads_click_direct(1114,370)
-    ads_click_direct(969,548)
-    ads_click_direct(1395, 763)
-    ads_click_direct(1390, 751)
-    ads_click_direct(861, 941)
+    # 点击首页左侧广告
+    ads_click_direct([(185,328),(185,531),(185,782)])
+
+    # 点击首页右侧广告
+    ads_click_direct([(1708,329),(1708,528),(1708,780)])
+    
+    # 内容广告
+    ads_click_direct([(420,595),(773,674),(1057,776)])
+    
+    # 侧栏广告
+    ads_click_direct([(1400, 764),(1400,835),(1400,900)])
+    
+    
+    # 电影分类
+    pyautogui.click(882,127)
+    pyautogui.sleep(15)
+    
+    # 点击底部广告
+    ads_click_direct([(515,940),(881,994),(1349,977)])
+
+    # 点击首页左侧广告
+    ads_click_direct([(185,328),(185,531),(185,782)])
+
+    # 点击首页右侧广告
+    ads_click_direct([(1708,329),(1708,528),(1708,780)])
+    
+    # 内容广告
+    pyautogui.click(1910,152)
+    pyautogui.dragTo(1910,229, 2)
+    ads_click_direct([(526,238),(1411,338),(629,627),(1495,586)])
+    pyautogui.sleep(1)
+    
+    # 内容广告
+    pyautogui.click(1910,228)
+    pyautogui.dragTo(1910,398, 2)
+    ads_click_direct([(476,264),(1411,429),(606,543),(1290,700)])
+    pyautogui.sleep(1)
+    
+    
+    # 搜索页面
+    pyautogui.click(1426, 124)
+    pyautogui.sleep(15)
+    
+    # 点击底部广告
+    ads_click_direct([(515,940),(881,994),(1349,977)])
+
+    # 点击首页左侧广告
+    ads_click_direct([(185,328),(185,531),(185,782)])
+
+    # 点击首页右侧广告
+    ads_click_direct([(1708,329),(1708,528),(1708,780)])
+    
+    # 内容广告
+    ads_click_direct([(420,595),(773,674),(1057,776)])
+    
+    # 侧栏广告
+    ads_click_direct([(1400, 764),(1400,835),(1400,900)])
 
 
 if __name__ == '__main__':
