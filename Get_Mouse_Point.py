@@ -15,6 +15,6 @@ try:
 		time.sleep(0.2)
 
 		# 清楚屏幕
-		os.system('cls')  
+		os.system('clear')  
 except KeyboardInterrupt:
 		print ('end....') 
