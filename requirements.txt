@@ -1,0 +1,2 @@
+pyautogui==
+selenium==4.10.0
