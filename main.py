@@ -5,16 +5,18 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
 ################# 常量定义 #################
-BROWSER_LOCATION = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'
-DRIVER_LOCATION = '/Users/wangjun/Documents/chromedriver_mac64/chromedriver'
+BROWSER_LOCATION = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+DRIVER_LOCATION = 'D:\SeleniumDriver\chromedriver.exe'
 ###########################################
 
 # 初始化
 options = webdriver.ChromeOptions()
 options.binary_location = BROWSER_LOCATION
+options.add_argument('--ignore-certificate-errors')
 options.add_experimental_option("excludeSwitches", ['enable-automation'])
+# options.add_experimental_option('excludeSwitches', ['enable-logging'])
 # options.add_argument('--headless') # 无界面模式
-options.add_argument(f'--proxy-server=http://183.221.242.103:9443')
+# options.add_argument(f'--proxy-server=http://183.221.242.103:9443')
 driver = webdriver.Chrome(service=Service(executable_path=DRIVER_LOCATION), options=options)
 
 
@@ -35,10 +37,6 @@ def open_website(address: str):
     # 打开地址
     driver.get(address)
     driver.maximize_window()
-
-    print('load done 1')
-    # 等待15秒网页加载
-    # pyautogui.sleep(15)
 
     # 检查title是否404
     check_404_refresh(driver, 1)
@@ -114,14 +112,11 @@ def ads_frame_click():
 
 if __name__ == '__main__':
     # 打开站点
-    # open_website('https://www.jaskan.com/404.html')
-    open_website('https://blog.csdn.net/EB_NUM/article/details/77864470')
+    open_website('https://www.jaskan.com')
 
-    driver.execute_script('location.href="https://www.baidu.com"')
-    
     # 执行点击
     # execute_click()
 
-    print('load done 2')
+    pyautogui.sleep(30)
     # 关闭浏览器
     driver.quit()
