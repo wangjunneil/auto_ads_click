@@ -84,6 +84,26 @@ def execute_click_ads():
     pyautogui.sleep(1)
     
     
+    # 搜索页面
+    pyautogui.click(1529, 124)
+    pyautogui.sleep(15)
+    
+    # 点击底部广告
+    ads_click_direct([(515,940),(881,994),(1349,977)])
+
+    # 点击首页左侧广告
+    ads_click_direct([(185,328),(185,531),(185,782)])
+
+    # 点击首页右侧广告
+    ads_click_direct([(1708,329),(1708,528),(1708,780)])
+    
+    # 内容广告
+    ads_click_direct([(420,595),(773,674),(1057,776)])
+    
+    # 侧栏广告
+    ads_click_direct([(1400, 764),(1400,835),(1400,900)])
+    
+    
     # 电影分类
     pyautogui.click(882,127)
     pyautogui.sleep(15)
@@ -131,24 +151,7 @@ def execute_click_ads():
     ads_click_direct([(1400, 764),(1400,835),(1400,900)])
 
 
-    # 搜索页面
-    pyautogui.click(1529, 124)
-    pyautogui.sleep(15)
     
-    # 点击底部广告
-    ads_click_direct([(515,940),(881,994),(1349,977)])
-
-    # 点击首页左侧广告
-    ads_click_direct([(185,328),(185,531),(185,782)])
-
-    # 点击首页右侧广告
-    ads_click_direct([(1708,329),(1708,528),(1708,780)])
-    
-    # 内容广告
-    ads_click_direct([(420,595),(773,674),(1057,776)])
-    
-    # 侧栏广告
-    ads_click_direct([(1400, 764),(1400,835),(1400,900)])
     
 
 if __name__ == '__main__':
