@@ -2,6 +2,12 @@
 
 import os,time
 import pyautogui as pag
+import platform
+
+cmd = 'cls'
+sys_platform = platform.platform().lower()
+if 'macos' in sys_platform:
+	cmd = 'clear'
 
 try:
 	while True:
@@ -15,6 +21,6 @@ try:
 		time.sleep(0.2)
 
 		# 清楚屏幕
-		os.system('cls')  
+		os.system(cmd)  
 except KeyboardInterrupt:
 		print ('end....') 

@@ -2,7 +2,7 @@
 # 自动化点击 www.jaskan.com 站点的 Google Ads广告
 
 import pyautogui
-from clash_switch_proxy import switch_proxy_random_point
+from switch_proxy import switch_proxy_random_point
 
 def ads_click_direct(points):
     '''

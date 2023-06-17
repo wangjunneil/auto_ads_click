@@ -1,12 +1,20 @@
 import pyautogui
-
+import platform
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
+from switch_proxy import *
+from finger_printing import *
+from jaskan_com import Jaskan
+
+sys_platform = platform.platform().lower()
 ################# 常量定义 #################
 BROWSER_LOCATION = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 DRIVER_LOCATION = 'D:\SeleniumDriver\chromedriver.exe'
+if 'macos' in sys_platform:
+    BROWSER_LOCATION = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    DRIVER_LOCATION = '/Users/wangjun/ToolLibrary/selenium_driver/chromedriver_chrome_114.0.5735.106/chromedriver'
 ###########################################
 
 # 初始化
@@ -14,77 +22,67 @@ options = webdriver.ChromeOptions()
 options.binary_location = BROWSER_LOCATION
 options.add_argument('--ignore-certificate-errors')
 options.add_experimental_option("excludeSwitches", ['enable-automation'])
+# options.add_experimental_option("mobileEmulation", {"deviceName": "iPhone 12 Pro"}) # 手机模式
 # options.add_experimental_option('excludeSwitches', ['enable-logging'])
 # options.add_argument('--headless') # 无界面模式
-# options.add_argument(f'--proxy-server=http://183.221.242.103:9443')
+# options.add_argument("--auto-open-devtools-for-tabs") # 开发者模式
+
+# 随机代理池
+# proxy_address = get_proxy_from_pool()
+# print(proxy_address)
+# options.add_argument(f'--proxy-server=http://{proxy_address}')
+
+# 随机 user-agent
+user_agent = get_random_user_agent()
+options.add_argument(f'--user-agent={user_agent}')
 driver = webdriver.Chrome(service=Service(executable_path=DRIVER_LOCATION), options=options)
 
 
-def ads_click_direct(points):
-    '''
-    按住ctrl点击给出的x,y坐标
-    '''
-    for point in points:
-        pyautogui.keyDown('ctrl')
-        pyautogui.click(point[0], point[1])
-        pyautogui.keyUp('ctrl')
-        pyautogui.sleep(1)
-
-def open_website(address: str):
+def open_website(address: str, jaskan: Jaskan):
     '''
     打开制定地址的站点
     '''
+    # 首次使用referer地址打开
+    # random_referer = get_random_referer()
+    # driver.get(random_referer)
+    # driver.maximize_window()
+
+    # 从referer地址跳转到实际地址
+    # driver.execute_script(f'window.location.href="{address}"')
+    # WebDriverWait(driver, 10).until(lambda driver: driver.current_url == address)
+
     # 打开地址
     driver.get(address)
     driver.maximize_window()
+    
 
     # 检查title是否404
-    check_404_refresh(driver, 1)
+    jaskan.check_404_refresh(1)
 
-def execute_click():
+def execute_click(jaskan: Jaskan):
     '''
     执行广告点击
     '''
-    # ..... 站点首页 ..... 
-    ads_frame_click()
+    # 首页
+    jaskan.index()
 
-    pyautogui.click(1910,194)
-    pyautogui.dragTo(1910,438, 2)
-    ads_click_direct([(415,258),(934,340),(1336,428)])
-    pyautogui.sleep(1)
+    # 电视剧
+    jaskan.tv()
 
-    pyautogui.click(1910,438)
-    pyautogui.dragTo(1910,561, 2)
-    ads_click_direct([(444,367),(932,472),(1331, 456)])
-    pyautogui.sleep(1)
+    # # 电影
+    jaskan.movie()  
 
-    pyautogui.click(1910,561)
-    pyautogui.dragTo(1910,705, 2)
-    ads_click_direct([(412,265),(942,386),(1450,387)])
-    pyautogui.sleep(1)
+    # # 随机影视分类
+    jaskan.type()
 
-    # ..... 电影页面 ..... 
-    # pyautogui.click(882,127)
-    driver.execute_script('location.href=https://www.jaskan.com/vodtype/1.html')
-    pyautogui.sleep(15)
+    # # 详情
+    jaskan.detail()
+    
+    # # 播放页面
+    jaskan.play()
 
-    ads_frame_click()
-    ads_click_direct([(420,595),(773,674),(1057,776)])
-    ads_click_direct([(1400, 764),(1400,835),(1400,900)])
 
-    # ..... 搜索页面 ..... 
-    pyautogui.click(1529, 124)
-    pyautogui.sleep(15)
-
-    ads_frame_click()
-    ads_click_direct([(420,595),(773,674),(1057,776)])
-    ads_click_direct([(1400, 764),(1400,835),(1400,900)])
-
-    # ..... 详情页面 ..... 
-
-    # ..... 播放页面 ..... 
-
-def check_404_refresh(driver, retry: int):
+def check_404_refresh(driver: webdriver, retry: int):
     '''
     检查页面是否404并3次尝试刷新
     '''
@@ -96,27 +94,25 @@ def check_404_refresh(driver, retry: int):
         pyautogui.sleep(15)
         check_404_refresh(driver, retry + 1)
 
-def ads_frame_click():
-    '''
-    通用页面级的ad广告位置点击
-    '''
-    # 点击首页底部广告
-    ads_click_direct([(515,940),(881,994),(1349,977)])
-
-    # # 点击首页左侧广告
-    ads_click_direct([(185,328),(185,531),(185,782)])
-
-    # # 点击首页右侧广告
-    ads_click_direct([(1708,329),(1708,528),(1708,780)])
-
 
 if __name__ == '__main__':
-    # 打开站点
-    open_website('https://www.jaskan.com')
+    try:
+        # 切换代理
+        switch_proxy_order_point()
+        
+        # 初始化站点对象
+        jaskan = Jaskan(driver)
 
-    # 执行点击
-    # execute_click()
+        # 打开站点
+        open_website('https://www.jaskan.com', jaskan)
+        # open_website('https://api.jaskan.com/myip', jaskan)
 
-    pyautogui.sleep(30)
-    # 关闭浏览器
-    driver.quit()
+        # 执行点击
+        execute_click(jaskan)
+
+        pyautogui.sleep(10)
+    except Exception as e:
+        print(str(e))
+    finally:
+        # 关闭浏览器
+        driver.quit()

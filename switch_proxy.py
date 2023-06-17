@@ -23,17 +23,39 @@ CLASH_NODE_DATA = [
     {'name':'🇦🇷 阿根廷', 'point':(1429, 319)},
     {'name':'🇵🇭 菲律宾 20倍消耗流量', 'point':(1429, 319)}
 ]
-DEFAULT_NODE_ORDER = 0
 #####################################################
+
+def __current_index() -> (int):
+    index_file = open('data/nodeindex', 'r')
+    current_index = int(index_file.readline())
+    index_file.close()
+    return current_index
+
+def __write_index(current_index:int):
+    index_file = open('data/nodeindex', 'w')
+    if current_index + 1 == len(CLASH_NODE_DATA):
+        index_file.write(str(0))
+    else:
+        last_index = current_index + 1
+        index_file.write(str(last_index))
+    index_file.close()
 
 def switch_proxy_order_point():
     '''
     通过 clash 内部API顺序切换代理
     '''
-    node = CLASH_NODE_DATA[DEFAULT_NODE_ORDER]
+    # 读取当前索引号
+    current_index = __current_index()
 
-    if DEFAULT_NODE_ORDER + 1 > 18:
-        DEFAULT_NODE_ORDER = 0    
+    # 获取代理节点名称
+    node = CLASH_NODE_DATA[current_index]
+    node_name = node['name']
+
+    # 切换本地 clash 代理
+    requests.put('http://127.0.0.1:9090/proxies/🚀 节点选择', json={'name':node_name})
+
+    # 写入下一个索引号
+    __write_index(current_index)
 
 def switch_proxy_random_point():
     '''
@@ -62,3 +84,8 @@ def switch_proxy_random_point():
     # 关闭窗口
     pyautogui.click(1902, 19)
     pyautogui.sleep(10)
+
+def get_proxy_from_pool() -> str:
+    response = requests.get('http://192.168.2.201:5000/get')
+    result_json = response.json()
+    return result_json['proxy']
