@@ -11,38 +11,43 @@ class Jaskan:
     def index(self):        
         self.__ads_frame_click()
 
-        # pyautogui.click(1910,194)
-        # pyautogui.dragTo(1910,438, 2)
-        # ads_click_direct([(415,258),(934,340),(1336,428)])
+        pyautogui.click(1910,250)
+        pyautogui.dragTo(1910,530, 2)
+        self.__ads_click_direct([(417,206),(815,274),(1472,387)])
+        pyautogui.sleep(1)
+
+        # pyautogui.click(1910,502)
+        # pyautogui.dragTo(1910,632, 2)
+        # self.__ads_click_direct([(464,271),(909,276),(1413, 286)])
         # pyautogui.sleep(1)
 
-        # pyautogui.click(1910,438)
-        # pyautogui.dragTo(1910,561, 2)
-        # ads_click_direct([(444,367),(932,472),(1331, 456)])
-        # pyautogui.sleep(1)
-
-        # pyautogui.click(1910,561)
-        # pyautogui.dragTo(1910,705, 2)
-        # ads_click_direct([(412,265),(942,386),(1450,387)])
+        # pyautogui.click(1910,632)
+        # pyautogui.dragTo(1910,764, 2)
+        # self.__ads_click_direct([(533,314),(993,260),(1453,414)])
         # pyautogui.sleep(1)
 
     def tv(self) -> None:
+        self.driver.execute_script('window.location.href="https://www.jaskan.com"')
         self.driver.find_element(By.LINK_TEXT, '电视剧').click()
         self.check_404_refresh(1)
         self.__vignette()
 
         # 页面广告点击
-        # self.__ads_frame_click()
+        pyautogui.sleep(3)
+        self.__ads_frame_click()
 
     def movie(self) -> None:
+        self.driver.execute_script('window.location.href="https://www.jaskan.com"')
         self.driver.find_element(By.LINK_TEXT, '电影').click()
         self.check_404_refresh(1)
         self.__vignette()
 
         # 页面广告点击
+        pyautogui.sleep(3)
         self.__ads_frame_click()
 
     def type(self) -> None:
+        self.driver.execute_script('window.location.href="https://www.jaskan.com"')
         VOD_TYPES = ['动作','科幻','恐怖','灾难','战争','犯罪','爱情','喜剧','剧情','悬疑','动漫']
         random_index = random.randrange(0, 10)
         self.driver.find_element(By.LINK_TEXT, VOD_TYPES[random_index]).click()
@@ -50,6 +55,7 @@ class Jaskan:
         self.__vignette()
 
         # 页面广告点击
+        pyautogui.sleep(3)
         self.__ads_frame_click()
 
     def detail(self) -> None:
@@ -80,7 +86,7 @@ class Jaskan:
         if self.driver.title == 'Service is not avaliable':
             self.driver.refresh()
             pyautogui.sleep(15)
-            self.check_404_refresh(self.driver, retry + 1)
+            self.check_404_refresh(retry + 1)
 
     # ==============================
 
@@ -102,11 +108,11 @@ class Jaskan:
         按住ctrl点击给出的x,y坐标
         '''
         for point in points:
-            # pyautogui.keyDown('ctrl')
-            pyautogui.keyDown('command')
+            pyautogui.keyDown('ctrl')
+            # pyautogui.keyDown('command')
             pyautogui.click(point[0], point[1])
-            # pyautogui.keyUp('ctrl')
-            pyautogui.keyUp('command')
+            pyautogui.keyUp('ctrl')
+            # pyautogui.keyUp('command')
             pyautogui.sleep(1)
 
     def __ads_frame_click(self):

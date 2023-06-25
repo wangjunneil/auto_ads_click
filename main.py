@@ -11,6 +11,7 @@ from jaskan_com import Jaskan
 sys_platform = platform.platform().lower()
 ################# 常量定义 #################
 BROWSER_LOCATION = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+# BROWSER_LOCATION = 'C:\Program Files\BraveSoftware\Brave-Browser\Application\\brave.exe'
 DRIVER_LOCATION = 'D:\SeleniumDriver\chromedriver.exe'
 if 'macos' in sys_platform:
     BROWSER_LOCATION = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
@@ -21,6 +22,7 @@ if 'macos' in sys_platform:
 options = webdriver.ChromeOptions()
 options.binary_location = BROWSER_LOCATION
 options.add_argument('--ignore-certificate-errors')
+# options.add_argument('--disable-brave-extension')
 options.add_experimental_option("excludeSwitches", ['enable-automation'])
 # options.add_experimental_option("mobileEmulation", {"deviceName": "iPhone 12 Pro"}) # 手机模式
 # options.add_experimental_option('excludeSwitches', ['enable-logging'])
@@ -36,7 +38,7 @@ options.add_experimental_option("excludeSwitches", ['enable-automation'])
 user_agent = get_random_user_agent()
 options.add_argument(f'--user-agent={user_agent}')
 driver = webdriver.Chrome(service=Service(executable_path=DRIVER_LOCATION), options=options)
-
+driver.set_window_size(1920,1080)
 
 def open_website(address: str, jaskan: Jaskan):
     '''
@@ -55,9 +57,11 @@ def open_website(address: str, jaskan: Jaskan):
     driver.get(address)
     driver.maximize_window()
     
-
     # 检查title是否404
     jaskan.check_404_refresh(1)
+
+    # 停止15s加载
+    pyautogui.sleep(5)
 
 def execute_click(jaskan: Jaskan):
     '''
@@ -76,10 +80,10 @@ def execute_click(jaskan: Jaskan):
     jaskan.type()
 
     # # 详情
-    jaskan.detail()
+    # jaskan.detail()
     
     # # 播放页面
-    jaskan.play()
+    # jaskan.play()
 
 
 def check_404_refresh(driver: webdriver, retry: int):

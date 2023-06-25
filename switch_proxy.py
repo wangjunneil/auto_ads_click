@@ -1,6 +1,7 @@
 import random
 import pyautogui
 import requests
+import sys
 
 ###################### 常量定义 ######################
 CLASH_NODE_DATA = [
@@ -20,25 +21,33 @@ CLASH_NODE_DATA = [
     {'name':'🇬🇧 英国', 'point':(1429, 319)},
     {'name':'🇦🇺 澳大利亚', 'point':(1429, 319)},
     {'name':'🇨🇦 加拿大', 'point':(1429, 319)},
-    {'name':'🇦🇷 阿根廷', 'point':(1429, 319)},
+    {'name':'🇹🇷 土耳其', 'point':(1429, 319)},
     {'name':'🇵🇭 菲律宾 20倍消耗流量', 'point':(1429, 319)}
 ]
 #####################################################
 
 def __current_index() -> (int):
-    index_file = open('data/nodeindex', 'r')
+    index_file = open(f'{sys.path[0]}/data/nodeindex', 'r')
     current_index = int(index_file.readline())
     index_file.close()
     return current_index
 
 def __write_index(current_index:int):
-    index_file = open('data/nodeindex', 'w')
-    if current_index + 1 == len(CLASH_NODE_DATA):
+    PROXYS = __get_valid_proxys()
+    
+    index_file = open(f'{sys.path[0]}/data/nodeindex', 'w')
+    if current_index + 1 == len(PROXYS):
         index_file.write(str(0))
     else:
         last_index = current_index + 1
         index_file.write(str(last_index))
     index_file.close()
+    
+def __get_valid_proxys() -> (list):
+    response = requests.get('http://127.0.0.1:54663/proxies')
+    result_json = response.json()
+    PROXYS = result_json['proxies']['🚀 手动切换']['all']
+    return PROXYS
 
 def switch_proxy_order_point():
     '''
@@ -48,11 +57,16 @@ def switch_proxy_order_point():
     current_index = __current_index()
 
     # 获取代理节点名称
-    node = CLASH_NODE_DATA[current_index]
-    node_name = node['name']
+    PROXYS = __get_valid_proxys()
+    node_name = PROXYS[current_index]
+    
+    # 检查节点是否可用
+    # response = requests.get(f'http://127.0.0.1:54663/proxies/{node_name}/delay?timeout=5000&url=https://www.jaskan.com')
+    # if "An error occurred in the delay test" in response.text:
+    #     switch_proxy_order_point()
 
     # 切换本地 clash 代理
-    requests.put('http://127.0.0.1:9090/proxies/🚀 节点选择', json={'name':node_name})
+    requests.put('http://127.0.0.1:54663/proxies/🚀 节点选择', json={'name':node_name})
 
     # 写入下一个索引号
     __write_index(current_index)
@@ -89,3 +103,9 @@ def get_proxy_from_pool() -> str:
     response = requests.get('http://192.168.2.201:5000/get')
     result_json = response.json()
     return result_json['proxy']
+
+
+
+# response = requests.get('http://127.0.0.1:54663/proxies')
+# result_json = response.json()
+# print(result_json['proxies']['🚀 手动切换']['all'])
